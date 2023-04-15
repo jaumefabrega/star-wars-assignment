@@ -2,7 +2,7 @@ import {
   ApiCharacterI,
   ApiPlantetI,
   CharacterI,
-  PlantetI,
+  PlanetI,
 } from "interfaces/interfaces";
 
 import axios from "axios";
@@ -22,10 +22,14 @@ const parseCharacterFromApi = (character: ApiCharacterI): CharacterI => {
   return {
     id: getIdFromSwapiUrl(character.url),
     name: character.name,
+    homeworldId: getIdFromSwapiUrl(character.homeworld),
+    homeworldUrl: character.homeworld,
     gender: character.gender,
     birthYearSW: character.birth_year,
     height: Number(character.height),
-    mass: Number(character.mass),
+    mass: !isNaN(parseFloat(character.mass))
+      ? Number(character.mass)
+      : "unknown", // FIX: TODO: check if other numeric attributes can be unknown
     hairColor: character.hair_color,
     eyeColor: character.eye_color,
     skinColor: character.skin_color,
@@ -42,7 +46,7 @@ const parseCharacterFromApi = (character: ApiCharacterI): CharacterI => {
   };
 };
 
-const getCharacter = async (id: number) => {
+const getCharacter = async (id: number): Promise<CharacterI> => {
   const res = await swapiClient.get(`/people/${id}`);
   return parseCharacterFromApi(res.data);
 };
@@ -54,8 +58,9 @@ const getCharacters = async (page: number = 1, searchTerm?: string) => {
   return res.data.results.map(parseCharacterFromApi);
 };
 
-const parsePlanetFromApi = (planet: ApiPlantetI): PlantetI => {
+const parsePlanetFromApi = (planet: ApiPlantetI): PlanetI => {
   return {
+    // FIX: TODO: multiple planet properties can be unknown (planet 28)
     id: getIdFromSwapiUrl(planet.url),
     name: planet.name,
     population: Number(planet.population),

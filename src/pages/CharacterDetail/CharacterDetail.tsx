@@ -1,28 +1,56 @@
-import { useEffect } from "react";
+import { CharacterI, PlanetI } from "interfaces/interfaces";
 
+import { useQuery } from "react-query";
+import { useParams } from "react-router-dom";
+
+import CharacterCard from "modules/characterDetail/CharacterCard/CharacterCard";
+import PlanetCard from "modules/characterDetail/PlanetCard/PlanetCard";
 import swapi from "services/swapi";
 
 import styles from "./characterDetail.module.scss";
 
 const CharacterDetail = () => {
-  useEffect(() => {
-    const getCharacter = async () => {
-      const character = await swapi.getCharacter(1);
-      console.log("Character:", character);
-    };
+  const { characterId } = useParams();
 
-    const getPlanet = async () => {
-      const planet = await swapi.getPlanet(1);
-      console.log("Planet", planet);
-    };
+  const {
+    data: character,
+    isLoading: isLoadingCharacter,
+    isIdle: isIdleCharacter,
+    error: errorCharacter,
+  } = useQuery<CharacterI, Error>(
+    ["getCharacter", characterId],
+    () => swapi.getCharacter(Number(characterId)),
+    {
+      retry: false,
+    }
+  );
 
-    getCharacter();
-    getPlanet();
-  }, []);
+  const {
+    data: planet,
+    isLoading: isLoadingPlanet,
+    isIdle: isIdlePlanet,
+    error: errorPlanet,
+  } = useQuery<PlanetI, Error>(
+    ["getPlanet", character?.homeworldId],
+    () => swapi.getPlanet(Number(character?.homeworldId)),
+    {
+      retry: false,
+      enabled: !!character,
+    }
+  );
 
   return (
     <div className={styles.container}>
-      <h3>CharactersDetail Page</h3>
+      <CharacterCard
+        character={character}
+        loading={isLoadingCharacter || isIdleCharacter}
+        error={errorCharacter}
+      />
+      <PlanetCard
+        planet={planet}
+        loading={isLoadingPlanet || isIdlePlanet}
+        error={errorPlanet}
+      />
     </div>
   );
 };

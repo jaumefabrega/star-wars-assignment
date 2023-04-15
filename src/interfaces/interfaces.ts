@@ -1,10 +1,12 @@
 export interface CharacterI {
   id: number;
   name: string;
+  homeworldId: number;
+  homeworldUrl: string;
   gender: string;
   birthYearSW: string;
   height: number;
-  mass: number;
+  mass: number | "unknown";
   hairColor: string;
   eyeColor: string;
   skinColor: string;
@@ -23,6 +25,7 @@ export interface CharacterI {
 export interface ApiCharacterI {
   url: string;
   name: string;
+  homeworld: string;
   gender: string;
   birth_year: string;
   height: string;
@@ -38,7 +41,7 @@ export interface ApiCharacterI {
   edited: string;
 }
 
-export interface PlantetI {
+export interface PlanetI {
   id: number;
   name: string;
   population: number;
