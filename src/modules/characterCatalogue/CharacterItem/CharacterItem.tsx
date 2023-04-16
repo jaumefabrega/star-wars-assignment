@@ -16,9 +16,9 @@ const CharacterItem: React.FC<Props> = ({ character }) => {
       <div className={styles.container}>
         <div>{character.name}</div>
         <div>{character.gender}</div>
-        <div>{character.height}</div>
-        <div>{character.mass}</div>
         <div>{character.eyeColor}</div>
+        <div>{character.mass}</div>
+        <div>{character.height}</div>
       </div>
     </Link>
   );

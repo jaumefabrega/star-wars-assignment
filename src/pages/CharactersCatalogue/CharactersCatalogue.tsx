@@ -1,3 +1,5 @@
+import { CharacterI } from "interfaces/interfaces";
+
 import { useState } from "react";
 import { Button, Select, TextInput } from "@mantine/core";
 import { useInfiniteQuery } from "react-query";
@@ -11,6 +13,16 @@ const CharactersCatalogue = () => {
   const [searchInput, setSearchInput] = useState("");
   const [searchedTerm, setSearchedTerm] = useState("");
   const [selectedEyeColor, setSelectedEyeColor] = useState<string | null>(null);
+
+  const sortFields: (keyof CharacterI)[] = ["mass", "height"];
+  const sortOptions = sortFields.reduce(
+    (options, field) => [...options, `${field} ASC`, `${field} DES`],
+    [] as string[] // FIX: TODO: check if this is the best way to type a reduce
+  );
+
+  const [selectedSortCriterion, setSelectedSortCriterion] = useState(
+    sortOptions[0]
+  );
 
   const {
     data,
@@ -41,12 +53,28 @@ const CharactersCatalogue = () => {
       .flatMap((page) => page.characters.map((character) => character.eyeColor))
       .filter((el, i, array) => array.indexOf(el) === i) || [];
 
+  const selectedSortField = selectedSortCriterion?.split(
+    " "
+  )[0] as keyof CharacterI;
+
   const charactersToDisplay =
     data?.pages
       .flatMap((page) => page.characters)
       .filter(
         (character) =>
           !selectedEyeColor || character.eyeColor === selectedEyeColor
+      )
+      .sort(
+        (a, b) => {
+          if (!selectedSortCriterion.includes(" ASC")) {
+            [a, b] = [b, a];
+          }
+          return (
+            (Number(a[selectedSortField]) || 0) -
+            (Number(b[selectedSortField]) || 0)
+            //* (selectedSortCriterion.includes(" ASC") ? 1 : -1)
+          );
+        } // FIX: move the sorting function to a helper util (also the generation of options)
       ) || [];
 
   return (
@@ -80,6 +108,16 @@ const CharactersCatalogue = () => {
             onChange={setSelectedEyeColor}
             data={eyeColors}
             clearable
+          />
+        </div>
+        <div className={styles.sortControls}>
+          <Select
+            label="Sort By"
+            value={selectedSortCriterion}
+            onChange={(value) => {
+              if (value) setSelectedSortCriterion(value);
+            }}
+            data={sortOptions}
           />
         </div>
       </div>
