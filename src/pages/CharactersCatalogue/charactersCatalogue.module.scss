@@ -1,6 +1,11 @@
 @import "styles/mixins";
 @import "styles/colors";
 
+.controls {
+  display: flex;
+  justify-content: space-between;
+}
+
 .searchControls {
   display: flex;
   align-items: center;

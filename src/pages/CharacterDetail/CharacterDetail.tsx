@@ -22,6 +22,7 @@ const CharacterDetail = () => {
     () => swapi.getCharacter(Number(characterId)),
     {
       retry: false,
+      refetchOnWindowFocus: false,
     }
   );
 
