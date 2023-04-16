@@ -1,6 +1,6 @@
 import {
   ApiCharacterI,
-  ApiPlantetI,
+  ApiPlanetI,
   CharacterI,
   PlanetI,
 } from "interfaces/interfaces";
@@ -51,14 +51,22 @@ const getCharacter = async (id: number): Promise<CharacterI> => {
   return parseCharacterFromApi(res.data);
 };
 
-const getCharacters = async (page: number = 1, searchTerm?: string) => {
+const getCharacters = async (
+  page: number = 1,
+  searchTerm?: string
+): Promise<{ characters: CharacterI[]; nextPageId: number }> => {
   const res = await swapiClient.get("/people", {
     params: { page, search: searchTerm },
   });
-  return res.data.results.map(parseCharacterFromApi);
+  const nextPageId =
+    res.data.next === null ? null : res.data.next.split("page=")[1];
+  return {
+    characters: res.data.results.map(parseCharacterFromApi),
+    nextPageId,
+  };
 };
 
-const parsePlanetFromApi = (planet: ApiPlantetI): PlanetI => {
+const parsePlanetFromApi = (planet: ApiPlanetI): PlanetI => {
   return {
     // FIX: TODO: multiple planet properties can be unknown (planet 28)
     id: getIdFromSwapiUrl(planet.url),
@@ -80,7 +88,7 @@ const parsePlanetFromApi = (planet: ApiPlantetI): PlanetI => {
   };
 };
 
-const getPlanet = async (id: number) => {
+const getPlanet = async (id: number): Promise<PlanetI> => {
   const res = await swapiClient.get(`/planets/${id}`);
   return parsePlanetFromApi(res.data);
 };

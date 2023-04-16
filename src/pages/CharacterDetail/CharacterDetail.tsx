@@ -17,7 +17,7 @@ const CharacterDetail = () => {
     isLoading: isLoadingCharacter,
     isIdle: isIdleCharacter,
     error: errorCharacter,
-  } = useQuery<CharacterI, Error>(
+  } = useQuery<CharacterI, Error>( // FIX: TODO: type is actually not needed (only issue: Error unknow or instanceof Error)
     ["getCharacter", characterId],
     () => swapi.getCharacter(Number(characterId)),
     {

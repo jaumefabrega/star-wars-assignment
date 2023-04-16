@@ -60,7 +60,7 @@ export interface PlanetI {
   editedAt: Date;
 }
 
-export interface ApiPlantetI {
+export interface ApiPlanetI {
   url: string;
   name: string;
   population: string;

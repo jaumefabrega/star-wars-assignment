@@ -1,0 +1,9 @@
+@import "styles/mixins";
+@import "styles/colors";
+
+.container {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  border: 1px solid silver;
+}
