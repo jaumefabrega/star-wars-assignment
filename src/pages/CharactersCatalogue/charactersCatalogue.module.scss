@@ -1,6 +1,12 @@
 @import "styles/mixins";
 @import "styles/colors";
 
+.searchControls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 .charactersList {
   display: flex;
   flex-direction: column;

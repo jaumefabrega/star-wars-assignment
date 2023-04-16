@@ -1,6 +1,5 @@
-import React from "react";
-
-import { Button } from "@mantine/core";
+import React, { useState } from "react";
+import { Button, TextInput } from "@mantine/core";
 import { useInfiniteQuery } from "react-query";
 
 import CharacterItem from "modules/characterCatalogue/CharacterItem/CharacterItem";
@@ -9,6 +8,9 @@ import swapi from "services/swapi";
 import styles from "./charactersCatalogue.module.scss";
 
 const CharactersCatalogue = () => {
+  const [searchInput, setSearchInput] = useState("");
+  const [searchedTerm, setSearchedTerm] = useState("");
+
   const {
     data,
     isFetching,
@@ -18,8 +20,8 @@ const CharactersCatalogue = () => {
     isIdle,
     fetchNextPage,
   } = useInfiniteQuery(
-    ["getCharacters"],
-    ({ pageParam }) => swapi.getCharacters(pageParam),
+    ["getCharacters", searchedTerm],
+    ({ pageParam }) => swapi.getCharacters(pageParam, searchedTerm),
     { getNextPageParam: (lastPage) => lastPage.nextPageId }
   );
 
@@ -31,7 +33,27 @@ const CharactersCatalogue = () => {
   return (
     <div className={styles.container}>
       <h3>CharactersCatalogue Page</h3>
+      <div className={styles.searchControls}>
+        <TextInput
+          value={searchInput}
+          onChange={(event) => setSearchInput(event.currentTarget.value)}
+          placeholder="Search by name"
+        />
+
+        <Button
+          onClick={() => setSearchedTerm(searchInput)}
+          disabled={isFetching}
+          variant="filled"
+          size="xs"
+        >
+          Search
+        </Button>
+      </div>
       <div className={styles.charactersList}>
+        <p>
+          Showing results for{" "}
+          {!searchedTerm ? "ALL names" : `name: ${searchedTerm}`}
+        </p>
         {data && // FIX: remove this (fixing types)
           data.pages.map((page) => (
             <React.Fragment key={page.nextPageId}>
