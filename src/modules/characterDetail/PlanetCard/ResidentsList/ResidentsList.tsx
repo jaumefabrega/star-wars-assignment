@@ -33,6 +33,7 @@ const ResidentsList: React.FC<Props> = ({
               className={cn({
                 [styles.current]: residentId === currentCharacterId,
               })}
+              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
               key={residentId}
             >
               {residentId}
