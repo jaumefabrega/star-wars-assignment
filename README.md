@@ -12,9 +12,15 @@ I'm [Jaume Fàbrega](https://jaumefabrega.github.io/), your friendly neighborhoo
 
 1. Clone this project
 2. Run `npm install`
-3. Put [this song](https://www.youtube.com/watch?v=HrIJT_4Txqw) on
-4. Run `npm run start`
-5. Enjoy
+3. Add an `env.local` file with the following content:
+
+   REACT_APP_API_URL=https://swapi.dev/api
+
+   NODE_PATH=./src
+
+4. Put [this song](https://www.youtube.com/watch?v=HrIJT_4Txqw) on
+5. Run `npm run start`
+6. Enjoy
 
 ## ...and it works offline!
 
