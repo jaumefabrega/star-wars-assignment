@@ -1,5 +1,6 @@
 import { Button, Select, TextInput } from "@mantine/core";
 import { useState } from "react";
+import { Helmet } from "react-helmet";
 import { useInfiniteQuery } from "react-query";
 import { Search } from "tabler-icons-react";
 
@@ -67,6 +68,10 @@ const CharactersCatalogue = () => {
 
   return (
     <div className={styles.container}>
+      <Helmet>
+        <title>SW - Characters</title>
+        <meta name="description" content="Browse the characters of Star Wars" />
+      </Helmet>
       <HeadsHeading />
       <div className={styles.controls}>
         <div className={styles.searchControls}>

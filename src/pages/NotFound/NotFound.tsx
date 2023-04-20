@@ -1,8 +1,14 @@
+import { Helmet } from "react-helmet";
+
 import styles from "./notFound.module.scss";
 
 const NotFound = () => {
   return (
     <div className={styles.container}>
+      <Helmet>
+        <title>SW - Page not Found</title>
+        <meta name="description" content="Something wrong happened" />
+      </Helmet>
       <div>
         <h3 className={styles.error}>ERROR</h3>
         <h1 className={styles.notFound}>404 Not Found</h1>

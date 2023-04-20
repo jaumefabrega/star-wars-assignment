@@ -2,6 +2,7 @@ import { CharacterI, PlanetI } from "interfaces/interfaces";
 
 import { Skeleton } from "@mantine/core";
 import { useState } from "react";
+import { Helmet } from "react-helmet";
 import { useQuery } from "react-query";
 import { useParams } from "react-router-dom";
 
@@ -47,6 +48,10 @@ const CharacterDetail = () => {
 
   return (
     <div className={styles.container}>
+      <Helmet>
+        <title>SW - {character?.name || ""}</title>
+        <meta name="description" content="All the character information" />
+      </Helmet>
       <h2 className={styles.name}>
         {character ? (
           `${character.name} (#${character.id})`

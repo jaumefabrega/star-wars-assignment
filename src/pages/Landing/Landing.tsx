@@ -1,4 +1,5 @@
 import { Button } from "@mantine/core";
+import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
 
 import { urls } from "constants/constants";
@@ -8,6 +9,10 @@ import styles from "./landing.module.scss";
 const Landing = () => {
   return (
     <div className={styles.container}>
+      <Helmet>
+        <title>Star Wars</title>
+        <meta name="description" content="Welcome to the world of Star Wars" />
+      </Helmet>
       <ul className={styles.xWings}>
         <li>
           <div />
