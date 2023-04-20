@@ -1,7 +1,7 @@
 import cn from "classnames";
 
 import { Skeleton } from "@mantine/core";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 import { getCharDetailUrl } from "utils/utils";
 
@@ -9,16 +9,12 @@ import styles from "./residentsList.module.scss";
 
 interface Props {
   residentIds?: number[];
-  currentCharacterId?: number;
   loading: boolean;
 }
 
-const ResidentsList: React.FC<Props> = ({
-  residentIds,
-  currentCharacterId,
-  loading,
-}) => {
+const ResidentsList: React.FC<Props> = ({ residentIds, loading }) => {
   const showSkeleton = loading || !residentIds;
+  const { characterId } = useParams();
 
   return (
     <div className={styles.container}>
@@ -31,7 +27,7 @@ const ResidentsList: React.FC<Props> = ({
             <Link
               to={getCharDetailUrl(residentId)}
               className={cn({
-                [styles.current]: residentId === currentCharacterId,
+                [styles.current]: residentId === Number(characterId),
               })}
               onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
               key={residentId}

@@ -17,17 +17,11 @@ import styles from "./planetCard.module.scss";
 
 interface Props {
   planet?: PlanetI;
-  currentCharacterId?: number;
   loading: boolean;
   error: Error | null;
 }
 
-const PlanetCard: React.FC<Props> = ({
-  planet,
-  currentCharacterId,
-  loading,
-  error,
-}) => {
+const PlanetCard: React.FC<Props> = ({ planet, loading, error }) => {
   const showSkeleton = !planet || loading;
 
   const cells = [
@@ -78,11 +72,7 @@ const PlanetCard: React.FC<Props> = ({
         cells={cells}
         loading={showSkeleton}
       />
-      <ResidentsList
-        residentIds={planet?.residentIds}
-        currentCharacterId={currentCharacterId}
-        loading={showSkeleton}
-      />
+      <ResidentsList residentIds={planet?.residentIds} loading={showSkeleton} />
     </Card>
   );
 };

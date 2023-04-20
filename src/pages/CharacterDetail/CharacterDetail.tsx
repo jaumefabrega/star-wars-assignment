@@ -66,7 +66,6 @@ const CharacterDetail = () => {
       />
       <PlanetCard
         planet={planet}
-        currentCharacterId={character?.id}
         loading={isLoadingPlanet || isIdlePlanet}
         error={errorPlanet}
       />
