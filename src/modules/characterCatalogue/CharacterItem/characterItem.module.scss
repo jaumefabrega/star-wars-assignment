@@ -1,31 +1,54 @@
 @import "styles/mixins";
 @import "styles/colors";
 
+.link {
+  position: relative;
+  background-color: white;
+}
+
 .container {
   display: flex;
   gap: 20px;
   align-items: center;
   border: 1px solid silver;
-  background: url("/images/planet_gray.svg") no-repeat, white;
   background-position: calc(100% + 60px) center;
   background-size: auto 220%;
   transition: background-size 0.3s;
+  background-color: transparent;
+  z-index: 1;
 
-  @include size-below("sm") {
-    flex-direction: column;
-    background: none;
-    background-color: white;
+  &::before {
+    content: url("/images/planet.svg");
+    position: absolute;
+    right: -45px;
+    top: -30px;
+    width: 130px;
+    height: 220%;
+    z-index: -1;
+    opacity: 0.8;
+    filter: grayscale(100%);
+    transition: transform 0.3s;
   }
 
   &:hover {
     box-shadow: $hoverShadow;
-    background: url("/images/planet.svg") no-repeat, white;
-    background-position: calc(100% + 60px) center;
-    background-size: auto 240%;
+
+    &::before {
+      filter: none;
+      transform: scale(1.2);
+      opacity: 1;
+    }
   }
 
   &.skeleton {
     pointer-events: none;
+  }
+
+  @include size-below("sm") {
+    flex-direction: column;
+    &::before {
+      content: "";
+    }
   }
 }
 

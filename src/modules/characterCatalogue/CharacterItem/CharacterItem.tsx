@@ -14,7 +14,7 @@ interface Props {
 
 const CharacterItem: React.FC<Props> = ({ character }) => {
   return (
-    <Link to={getCharDetailUrl(character.id)}>
+    <Link to={getCharDetailUrl(character.id)} className={styles.link}>
       <Card
         shadow="sm"
         padding="lg"
