@@ -57,7 +57,8 @@ const CharactersCatalogue = () => {
 
   const distinctEyeColors = flatCharacters
     .map((character) => character.eyeColor)
-    .filter((el, i, array) => array.indexOf(el) === i);
+    .filter((el, i, array) => array.indexOf(el) === i)
+    .sort();
 
   const charactersToDisplay = flatCharacters
     .filter((char) => char.eyeColor === selectedEyeColor || !selectedEyeColor)
