@@ -2,5 +2,18 @@
 @import "styles/colors";
 
 .container {
-  color: black;
+  min-height: calc(100vh - $headerHeight - $footerHeight);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+  padding: 20px 10px 30px;
+
+  background: url("/images/waves.svg") no-repeat bottom center,
+    url("/images/death_star.svg") no-repeat left top;
+  background-size: 100%, 250px;
+}
+
+.name {
+  margin: 0;
 }

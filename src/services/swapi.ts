@@ -7,7 +7,7 @@ import {
 
 import axios from "axios";
 
-import { getIdFromSwapiUrl } from "utils/utils";
+import { getIdFromSwapiUrl, parseUnknowableNumber } from "utils/utils";
 
 const BASE_URL = process.env.REACT_APP_API_URL;
 
@@ -26,10 +26,8 @@ const parseCharacterFromApi = (character: ApiCharacterI): CharacterI => {
     homeworldUrl: character.homeworld,
     gender: character.gender,
     birthYearSW: character.birth_year,
-    height: Number(character.height),
-    mass: !isNaN(parseFloat(character.mass))
-      ? Number(character.mass)
-      : "unknown", // FIX: TODO: check if other numeric attributes can be unknown
+    height: parseUnknowableNumber(character.height),
+    mass: parseUnknowableNumber(character.mass),
     hairColor: character.hair_color,
     eyeColor: character.eye_color,
     skinColor: character.skin_color,
@@ -68,14 +66,13 @@ const getCharacters = async (
 
 const parsePlanetFromApi = (planet: ApiPlanetI): PlanetI => {
   return {
-    // FIX: TODO: multiple planet properties can be unknown (planet 28)
     id: getIdFromSwapiUrl(planet.url),
     name: planet.name,
-    population: Number(planet.population),
-    diameter: Number(planet.diameter),
-    surfaceWater: Number(planet.surface_water),
-    orbitalPeriod: Number(planet.orbital_period),
-    rotationPeriod: Number(planet.rotation_period),
+    population: parseUnknowableNumber(planet.population),
+    diameter: parseUnknowableNumber(planet.diameter),
+    surfaceWater: parseUnknowableNumber(planet.surface_water),
+    orbitalPeriod: parseUnknowableNumber(planet.orbital_period),
+    rotationPeriod: parseUnknowableNumber(planet.rotation_period),
     terrain: planet.terrain,
     climate: planet.climate,
     gravity: planet.gravity,

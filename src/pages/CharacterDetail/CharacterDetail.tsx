@@ -1,5 +1,7 @@
 import { CharacterI, PlanetI } from "interfaces/interfaces";
 
+import { Skeleton } from "@mantine/core";
+import { useState } from "react";
 import { useQuery } from "react-query";
 import { useParams } from "react-router-dom";
 
@@ -11,6 +13,7 @@ import styles from "./characterDetail.module.scss";
 
 const CharacterDetail = () => {
   const { characterId } = useParams();
+  const [planetId, setPlanetId] = useState<number | null>(null);
 
   const {
     data: character,
@@ -23,6 +26,7 @@ const CharacterDetail = () => {
     {
       retry: false,
       refetchOnWindowFocus: false,
+      onSuccess: (char) => setPlanetId(char.homeworldId),
     }
   );
 
@@ -32,16 +36,24 @@ const CharacterDetail = () => {
     isIdle: isIdlePlanet,
     error: errorPlanet,
   } = useQuery<PlanetI, Error>(
-    ["getPlanet", character?.homeworldId],
-    () => swapi.getPlanet(Number(character?.homeworldId)),
+    ["getPlanet", planetId],
+    () => swapi.getPlanet(Number(planetId)),
     {
       retry: false,
-      enabled: !!character,
+      enabled: !!planetId,
+      refetchOnWindowFocus: false,
     }
   );
 
   return (
     <div className={styles.container}>
+      <h2 className={styles.name}>
+        {character ? (
+          `${character.name} (#${character.id})`
+        ) : (
+          <Skeleton height={37.2} mt={0} width="150" radius="sm" />
+        )}
+      </h2>
       <CharacterCard
         character={character}
         loading={isLoadingCharacter || isIdleCharacter}
@@ -49,6 +61,7 @@ const CharacterDetail = () => {
       />
       <PlanetCard
         planet={planet}
+        currentCharacterId={character?.id}
         loading={isLoadingPlanet || isIdlePlanet}
         error={errorPlanet}
       />

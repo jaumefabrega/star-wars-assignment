@@ -2,5 +2,19 @@
 @import "styles/colors";
 
 .container {
-  color: black;
+  min-height: calc(100vh - $headerHeight - $footerHeight);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+  justify-content: center;
+}
+
+.error,
+.notFound {
+  margin: 0 auto;
+}
+
+.image {
+  max-width: 96%;
 }

@@ -4,3 +4,5 @@ export const urls = {
   CHARACTER_DETAIL: "/character/:characterId",
   NOT_FOUND: "/*",
 };
+
+export const SWAPI_ITEMS_PER_PAGE = 10;

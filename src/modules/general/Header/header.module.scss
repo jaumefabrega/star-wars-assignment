@@ -1,6 +1,40 @@
 @import "styles/mixins";
 @import "styles/colors";
+@import "styles/variables";
 
 .container {
-  color: black;
+  position: fixed;
+  height: $headerHeight;
+  min-height: $headerHeight;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 0 0 10px 10px;
+  border-bottom: 1px solid white;
+  background-color: white;
+  box-shadow: 0 0.0625rem 0.1875rem rgba(0, 0, 0, 0.05),
+    rgba(0, 0, 0, 0.05) 0 1.25rem 1.5625rem -0.3125rem;
+}
+
+.link {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  text-transform: uppercase;
+
+  img,
+  svg {
+    width: 28px;
+    height: 28px;
+    opacity: 0.7;
+  }
+
+  &:hover {
+    font-weight: 600;
+
+    img,
+    svg {
+      opacity: 1;
+    }
+  }
 }

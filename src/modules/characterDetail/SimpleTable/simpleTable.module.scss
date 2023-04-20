@@ -1,0 +1,27 @@
+@import "styles/mixins";
+@import "styles/colors";
+
+.container {
+  max-width: 500px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  @include size-below("sm") {
+    align-items: center;
+  }
+}
+
+.title {
+  margin: 0;
+  text-align: left;
+}
+
+.characteristics {
+  display: flex;
+  row-gap: 20px;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}

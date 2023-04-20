@@ -1,42 +1,89 @@
 import { PlanetI } from "interfaces/interfaces";
 
-import { Link } from "react-router-dom";
+import { Card } from "@mantine/core";
+import {
+  ArrowBarToDown,
+  Cloud,
+  CircleHalfVertical,
+  Droplet,
+  Planet,
+  Users,
+} from "tabler-icons-react";
 
-import { urls } from "constants/constants";
+import SimpleTable from "../SimpleTable/SimpleTable";
+import ResidentsList from "./ResidentsList/ResidentsList";
 
 import styles from "./planetCard.module.scss";
 
 interface Props {
   planet?: PlanetI;
+  currentCharacterId?: number;
   loading: boolean;
   error: Error | null;
 }
 
-const PlanetCard: React.FC<Props> = ({ planet, loading, error }) => {
-  if (loading || !planet) return <div>Loading...</div>;
+const PlanetCard: React.FC<Props> = ({
+  planet,
+  currentCharacterId,
+  loading,
+  error,
+}) => {
+  const showSkeleton = !planet || loading;
+
+  const cells = [
+    {
+      title: "Orbital Period",
+      icon: <Planet />,
+      value: planet?.orbitalPeriod,
+    },
+    {
+      title: "Population",
+      icon: <Users />,
+      value: planet?.population,
+    },
+    {
+      title: "Diameter",
+      icon: <CircleHalfVertical />,
+      value: planet?.diameter,
+    },
+    {
+      title: "Climate",
+      icon: <Cloud />,
+      value: planet?.climate,
+    },
+    {
+      title: "Surf. Water",
+      icon: <Droplet />,
+      value: planet?.surfaceWater,
+    },
+    {
+      title: "Gravity",
+      icon: <ArrowBarToDown />,
+      value: planet?.gravity,
+    },
+  ];
+
   if (error) return <div>ERROR: {error.message}</div>;
 
   return (
-    <div className={styles.container}>
-      <h3>Homeworld</h3>
-      <div>{planet.name}</div>
-      <div>{planet.population}</div>
-      <div>{planet.terrain}</div>
-      <div>{planet.gravity}</div>
-      <div className={styles.residentsList}>
-        {planet.residentIds.map((residentId) => (
-          <Link
-            to={urls.CHARACTER_DETAIL.replace(
-              ":characterId",
-              String(residentId)
-            )}
-            key={residentId}
-          >
-            {residentId}
-          </Link>
-        ))}
-      </div>
-    </div>
+    <Card
+      shadow="sm"
+      padding="lg"
+      radius="md"
+      withBorder
+      className={styles.container}
+    >
+      <SimpleTable
+        title={`Homeworld: ${planet?.name}`}
+        cells={cells}
+        loading={showSkeleton}
+      />
+      <ResidentsList
+        residentIds={planet?.residentIds}
+        currentCharacterId={currentCharacterId}
+        loading={showSkeleton}
+      />
+    </Card>
   );
 };
 

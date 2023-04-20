@@ -4,7 +4,7 @@ import styles from "./footer.module.scss";
 
 const Footer = () => {
   return (
-    <MantineFooter height={60} p="md">
+    <MantineFooter height={60} p="md" className={styles.container}>
       Made with &#x2764; by Jaume
     </MantineFooter>
   );

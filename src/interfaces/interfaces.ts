@@ -1,3 +1,5 @@
+type UnknowableNumber = number | "unknown";
+
 export interface CharacterI {
   id: number;
   name: string;
@@ -5,8 +7,8 @@ export interface CharacterI {
   homeworldUrl: string;
   gender: string;
   birthYearSW: string;
-  height: number;
-  mass: number | "unknown";
+  height: UnknowableNumber;
+  mass: UnknowableNumber;
   hairColor: string;
   eyeColor: string;
   skinColor: string;
@@ -44,14 +46,14 @@ export interface ApiCharacterI {
 export interface PlanetI {
   id: number;
   name: string;
-  population: number;
-  diameter: number;
+  population: UnknowableNumber;
+  diameter: UnknowableNumber;
   terrain: string;
   climate: string;
-  surfaceWater: number;
+  surfaceWater: UnknowableNumber;
   gravity: string;
-  orbitalPeriod: number;
-  rotationPeriod: number;
+  orbitalPeriod: UnknowableNumber;
+  rotationPeriod: UnknowableNumber;
   filmUrls: string[];
   filmIds: number[];
   residentUrls: string[];

@@ -4,6 +4,62 @@
 .container {
   display: flex;
   gap: 20px;
-  justify-content: space-between;
+  align-items: center;
   border: 1px solid silver;
+  background: url("/images/planet_gray.svg") no-repeat, white;
+  background-position: calc(100% + 60px) center;
+  background-size: auto 220%;
+  transition: background-size 0.3s;
+
+  @include size-below("sm") {
+    flex-direction: column;
+    background: none;
+    background-color: white;
+  }
+
+  &:hover {
+    box-shadow: $hoverShadow;
+    background: url("/images/planet.svg") no-repeat, white;
+    background-position: calc(100% + 60px) center;
+    background-size: auto 240%;
+  }
+
+  &.skeleton {
+    pointer-events: none;
+  }
+}
+
+.name {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-clamp: 1;
+  text-align: left;
+  font-weight: 600;
+}
+
+.cell {
+  width: 130px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  word-wrap: break-word;
+
+  .title {
+    font-weight: 600;
+    display: none;
+  }
+
+  svg {
+    color: gray;
+  }
+
+  @include size-below("sm") {
+    width: 100%;
+    justify-content: center;
+
+    .title {
+      display: block;
+    }
+  }
 }

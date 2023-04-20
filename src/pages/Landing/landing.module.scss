@@ -1,6 +1,173 @@
 @import "styles/mixins";
 @import "styles/colors";
+@import "styles/variables";
 
 .container {
-  color: black;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: calc(100vh - $headerHeight - $footerHeight);
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  justify-content: center;
+  align-items: center;
+  background: url("/images/stars_background.png") repeat, black;
+}
+
+$shadow: 0px 0px 6px rgba(255, 255, 255, 0.5);
+
+.image {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  filter: drop-shadow($shadow);
+}
+
+.imageWrapper {
+  position: relative;
+  z-index: 0;
+  width: 80%;
+  padding-bottom: 40%;
+}
+
+.link {
+  box-shadow: $shadow;
+}
+
+.xWings {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  list-style-type: none;
+
+  li {
+    position: absolute;
+    display: block;
+    width: 20px;
+    height: 20px;
+    top: 110%;
+    list-style: none;
+    animation: fly 25s linear infinite;
+
+    & > div {
+      width: 100%;
+      height: 100%;
+      display: block;
+
+      &::after {
+        content: "";
+        background-image: url("/images/x_wing.png");
+        background-size: contain;
+        background-position: center;
+        width: 100%;
+        height: 100%;
+        display: block;
+      }
+    }
+
+    &:nth-child(1) {
+      left: 25%;
+      width: 80px;
+      height: 80px;
+      animation-delay: 0s;
+      z-index: 0;
+    }
+
+    &:nth-child(2) {
+      left: 10%;
+      width: 20px;
+      height: 20px;
+      animation-delay: 2s;
+      animation-duration: 12s;
+      z-index: 0;
+    }
+
+    &:nth-child(3) {
+      left: 70%;
+      width: 40px;
+      height: 40px;
+      animation-delay: 4s;
+      z-index: 0;
+    }
+
+    &:nth-child(4) {
+      left: 40%;
+      width: 60px;
+      height: 60px;
+      animation-delay: 0s;
+      animation-duration: 18s;
+      z-index: 0;
+    }
+
+    &:nth-child(5) {
+      left: 65%;
+      width: 36px;
+      height: 36px;
+      animation-delay: 0s;
+      z-index: 0;
+    }
+
+    &:nth-child(6) {
+      left: 75%;
+      width: 110px;
+      height: 110px;
+      animation-delay: 3s;
+      z-index: 1;
+    }
+
+    &:nth-child(7) {
+      left: 35%;
+      width: 150px;
+      height: 150px;
+      animation-delay: 7s;
+      z-index: 1;
+    }
+
+    &:nth-child(8) {
+      left: 50%;
+      width: 25px;
+      height: 25px;
+      animation-delay: 15s;
+      animation-duration: 45s;
+      z-index: 0;
+    }
+
+    &:nth-child(9) {
+      left: 20%;
+      width: 15px;
+      height: 15px;
+      animation-delay: 2s;
+      animation-duration: 35s;
+      z-index: 0;
+    }
+
+    &:nth-child(10) {
+      left: 5%;
+      width: 150px;
+      height: 150px;
+      animation-delay: 0s;
+      animation-duration: 11s;
+      z-index: 1;
+    }
+  }
+}
+
+@keyframes fly {
+  0% {
+    top: 110%;
+    opacity: 1;
+  }
+
+  100% {
+    top: -200px;
+    opacity: 1;
+  }
 }

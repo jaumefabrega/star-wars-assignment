@@ -1,10 +1,12 @@
 import { CharacterI } from "interfaces/interfaces";
 
-import { useState } from "react";
 import { Button, Select, TextInput } from "@mantine/core";
+import { useState } from "react";
 import { useInfiniteQuery } from "react-query";
+import { Search } from "tabler-icons-react";
 
-import CharacterItem from "modules/characterCatalogue/CharacterItem/CharacterItem";
+import CharactersList from "modules/characterCatalogue/CharactersList/CharactersList";
+import HeadsHeading from "modules/characterCatalogue/HeadsHeading/HeadsHeading";
 import swapi from "services/swapi";
 
 import styles from "./charactersCatalogue.module.scss";
@@ -27,6 +29,7 @@ const CharactersCatalogue = () => {
   const {
     data,
     isFetching,
+    isFetchingNextPage,
     hasNextPage,
     isLoading,
     error,
@@ -41,109 +44,105 @@ const CharactersCatalogue = () => {
     }
   );
 
-  if (isLoading || isIdle) return <div>Loading...</div>;
-  if (error)
-    return (
-      <div>ERROR: {error instanceof Error ? error.message : "unknown"}</div>
-    );
+  const flatCharacters = data?.pages.flatMap((page) => page.characters) || [];
 
   // Could be done with one fewer loop but would be less readable (and anyway the max length is small)
-  const eyeColors =
-    data?.pages
-      .flatMap((page) => page.characters.map((character) => character.eyeColor))
+  const distinctEyeColors =
+    flatCharacters
+      .map((character) => character.eyeColor)
       .filter((el, i, array) => array.indexOf(el) === i) || [];
 
   const selectedSortField = selectedSortCriterion?.split(
     " "
   )[0] as keyof CharacterI;
 
+  const sortFunction = (a: CharacterI, b: CharacterI) => {
+    if (!selectedSortCriterion.includes(" ASC")) {
+      [a, b] = [b, a];
+    }
+    return (
+      (Number(a[selectedSortField]) || 0) - (Number(b[selectedSortField]) || 0)
+    );
+  }; // FIX: move the sorting function to a helper util (also the generation of options)
+
   const charactersToDisplay =
-    data?.pages
-      .flatMap((page) => page.characters)
-      .filter(
-        (character) =>
-          !selectedEyeColor || character.eyeColor === selectedEyeColor
-      )
-      .sort(
-        (a, b) => {
-          if (!selectedSortCriterion.includes(" ASC")) {
-            [a, b] = [b, a];
-          }
-          return (
-            (Number(a[selectedSortField]) || 0) -
-            (Number(b[selectedSortField]) || 0)
-            //* (selectedSortCriterion.includes(" ASC") ? 1 : -1)
-          );
-        } // FIX: move the sorting function to a helper util (also the generation of options)
-      ) || [];
+    flatCharacters
+      .filter((char) => char.eyeColor === selectedEyeColor || !selectedEyeColor)
+      .sort(sortFunction) || [];
+
+  const handleSearch = () => {
+    setSearchedTerm(searchInput);
+    setSelectedEyeColor(null);
+  };
 
   return (
     <div className={styles.container}>
-      <h3>CharactersCatalogue Page</h3>
+      <HeadsHeading />
       <div className={styles.controls}>
         <div className={styles.searchControls}>
           <TextInput
             value={searchInput}
             onChange={(event) => setSearchInput(event.currentTarget.value)}
+            onKeyPress={(event) => {
+              if (event.key === "Enter") handleSearch();
+            }}
             placeholder="Search by name"
-            // FIX: TODO: add onKeyPress (submit)
+            label="Search by name:"
+            className={styles.searchInput}
+            disabled={isFetching}
           />
 
           <Button
-            onClick={() => {
-              setSearchedTerm(searchInput);
-              setSelectedEyeColor(null);
-            }}
+            onClick={handleSearch}
             disabled={isFetching}
             variant="filled"
-            size="xs"
+            size="sm"
           >
-            Search
+            <Search />
           </Button>
         </div>
-        <div className={styles.filterControls}>
+        <div className={styles.clientSideControls}>
           <Select
-            label="Eye Color"
+            label="Eye Color:"
             value={selectedEyeColor}
             onChange={setSelectedEyeColor}
-            data={eyeColors}
+            data={distinctEyeColors}
             clearable
+            classNames={{
+              root: styles.select,
+              item: styles.selectItem,
+              input: styles.selectInput,
+            }}
           />
-        </div>
-        <div className={styles.sortControls}>
           <Select
-            label="Sort By"
+            label="Sort By:"
             value={selectedSortCriterion}
             onChange={(value) => {
               if (value) setSelectedSortCriterion(value);
             }}
             data={sortOptions}
+            classNames={{
+              root: styles.select,
+              item: styles.selectItem,
+              input: styles.selectInput,
+            }}
           />
         </div>
       </div>
-      <div className={styles.charactersList}>
-        <div className={styles.info}>
-          <p>
-            Showing results for{" "}
-            {!searchedTerm ? "ALL names" : `name: ${searchedTerm}`}
-          </p>
-          <p>
-            Filtered results: {charactersToDisplay.length} of Total:{" "}
-            {/* FIX: TODO: prettier*/}
-            {data?.pages.flatMap((page) => page.characters).length}
-          </p>
-        </div>
-        {charactersToDisplay?.map((character) => (
-          <CharacterItem character={character} key={character.id} />
-        ))}
-      </div>
+      <CharactersList
+        characters={charactersToDisplay}
+        searchedTerm={searchedTerm}
+        totalFetched={flatCharacters.length}
+        showSkeleton={isLoading && !searchedTerm}
+        finishedFetching={!isLoading || !isFetching}
+      />
       <Button
         onClick={() => fetchNextPage()}
         disabled={!hasNextPage || isFetching}
         variant="filled"
         size="xs"
       >
-        {isFetching
+        {isLoading || isFetchingNextPage
           ? "Loading more..."
           : hasNextPage
           ? "Load More"
@@ -151,9 +150,8 @@ const CharactersCatalogue = () => {
       </Button>
 
       <p>
-        Filtered results: {charactersToDisplay.length} Unfiltered results:{" "}
-        {/* FIX: TODO: prettier*/}
-        {data?.pages.flatMap((page) => page.characters).length}
+        {flatCharacters.length - charactersToDisplay.length} of{" "}
+        {flatCharacters.length} filtered out
       </p>
     </div>
   );

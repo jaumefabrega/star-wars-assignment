@@ -1,0 +1,25 @@
+@import "styles/mixins";
+@import "styles/colors";
+
+.container {
+  height: 56px;
+  margin: 40px auto;
+  display: flex;
+  gap: 28px;
+  align-items: center;
+  justify-content: center;
+
+  img {
+    width: 56px;
+    filter: drop-shadow(0px 0px 5px rgba(0, 0, 0, 0.5));
+  }
+
+  @include size-below("sm") {
+    margin: 20px auto;
+
+    img {
+      width: 48px;
+      gap: 18px;
+    }
+  }
+}

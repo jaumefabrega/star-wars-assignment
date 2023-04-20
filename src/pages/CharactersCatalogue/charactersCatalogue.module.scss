@@ -1,19 +1,54 @@
 @import "styles/mixins";
 @import "styles/colors";
 
+.container {
+  min-height: calc(100vh - $headerHeight - $footerHeight);
+  max-width: 800px;
+  margin: auto;
+  padding: 20px 10px 30px;
+}
+
 .controls {
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  row-gap: 16px;
+
+  @include size-below("sm") {
+    flex-direction: column;
+  }
 }
 
 .searchControls {
   display: flex;
-  align-items: center;
   gap: 8px;
+  align-items: end;
+
+  .searchInput {
+    text-align: left;
+  }
 }
 
-.charactersList {
+.clientSideControls {
   display: flex;
-  flex-direction: column;
-  gap: 8px;
+  gap: 16px;
+}
+
+.select {
+  text-align: left;
+  width: 130px;
+
+  @include size-below("sm") {
+    text-align: center;
+  }
+}
+
+.selectInput,
+.selectItem {
+  text-transform: capitalize;
+  text-align: left;
+
+  @include size-below("sm") {
+    text-align: center;
+  }
 }
