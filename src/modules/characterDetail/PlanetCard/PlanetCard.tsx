@@ -57,7 +57,9 @@ const PlanetCard: React.FC<Props> = ({ planet, loading, error }) => {
     },
   ];
 
-  if (error) return <div>ERROR: {error.message}</div>;
+  if (error) {
+    return <div>Cannot fetch Planet data. ERROR: {error.message}</div>;
+  }
 
   return (
     <Card

@@ -21,7 +21,7 @@ const CharacterDetail = () => {
     isLoading: isLoadingCharacter,
     isIdle: isIdleCharacter,
     error: errorCharacter,
-  } = useQuery<CharacterI, Error>( // FIX: TODO: type is actually not needed (only issue: Error unknow or instanceof Error)
+  } = useQuery<CharacterI, Error>(
     ["getCharacter", characterId],
     () => swapi.getCharacter(Number(characterId)),
     {
@@ -67,7 +67,7 @@ const CharacterDetail = () => {
       <PlanetCard
         planet={planet}
         loading={isLoadingPlanet || isIdlePlanet}
-        error={errorPlanet}
+        error={errorPlanet || (planet ? null : errorCharacter)}
       />
     </div>
   );

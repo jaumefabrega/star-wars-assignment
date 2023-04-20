@@ -74,7 +74,9 @@ const CharacterCard: React.FC<Props> = ({ character, loading, error }) => {
     },
   ];
 
-  if (error) return <div>ERROR: {error.message}</div>;
+  if (error) {
+    return <div>Cannot fetch Character data. ERROR: {error.message}</div>;
+  }
 
   return (
     <Card

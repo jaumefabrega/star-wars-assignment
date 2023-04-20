@@ -1,3 +1,5 @@
+import { CharacterI } from "interfaces/interfaces";
+
 import { Button, Select, TextInput } from "@mantine/core";
 import { useState } from "react";
 import { Helmet } from "react-helmet";
@@ -40,13 +42,13 @@ const CharactersCatalogue = () => {
     hasNextPage,
     isLoading,
     error,
-    isIdle,
     fetchNextPage,
-  } = useInfiniteQuery(
+  } = useInfiniteQuery<{ characters: CharacterI[]; nextPageId: number }, Error>(
     ["getCharacters", searchedTerm],
     ({ pageParam }) => swapi.getCharacters(pageParam, searchedTerm),
     {
       getNextPageParam: (lastPage) => lastPage.nextPageId,
+      retry: false,
       refetchOnWindowFocus: false,
     }
   );
@@ -132,6 +134,7 @@ const CharactersCatalogue = () => {
         totalFetched={flatCharacters.length}
         showSkeleton={isLoading && !searchedTerm}
         finishedFetching={!isLoading || !isFetching}
+        error={error}
       />
       <Button
         onClick={() => fetchNextPage()}

@@ -13,6 +13,7 @@ interface Props {
   totalFetched: number;
   showSkeleton: boolean;
   finishedFetching: boolean;
+  error: Error | null;
 }
 
 const CharactersList: React.FC<Props> = ({
@@ -21,6 +22,7 @@ const CharactersList: React.FC<Props> = ({
   totalFetched,
   showSkeleton,
   finishedFetching,
+  error,
 }) => {
   const resultsExplanation = `${
     finishedFetching ? "Showing" : "Loading"
@@ -40,7 +42,12 @@ const CharactersList: React.FC<Props> = ({
           : characters?.map((character) => (
               <CharacterItem character={character} key={character.id} />
             ))}
-        {finishedFetching && characters.length === 0 && "No results"}
+        {finishedFetching && characters.length === 0 && !error && "No results"}
+        {!!error && (
+          <div className={styles.container}>
+            Cannot fetch Characters data. ERROR: {error.message}
+          </div>
+        )}
       </div>
     </div>
   );
