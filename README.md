@@ -12,7 +12,7 @@ I'm [Jaume Fàbrega](https://jaumefabrega.github.io/), your friendly neighborhoo
 
 1. Clone this project
 2. Run `npm install`
-3. Add an `env.local` file with the following content:
+3. Add an `.env.local` file with the following content:
 
    REACT_APP_API_URL=https://swapi.dev/api
 
@@ -24,7 +24,7 @@ I'm [Jaume Fàbrega](https://jaumefabrega.github.io/), your friendly neighborhoo
 
 ## ...and it works offline!
 
-To check its behavior online:
+To check its behavior offline:
 
 1. Run `npm run build`
 2. Run `npx serve -s build`
