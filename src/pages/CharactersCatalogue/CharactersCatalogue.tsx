@@ -2,7 +2,7 @@ import { CharacterI } from "interfaces/interfaces";
 
 import { Button, Select, TextInput } from "@mantine/core";
 import { useState } from "react";
-import { Helmet } from "react-helmet";
+import { Helmet } from "react-helmet-async";
 import { useInfiniteQuery } from "react-query";
 import { Search } from "tabler-icons-react";
 

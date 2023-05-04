@@ -7,21 +7,24 @@ import OfflineIndicator from "modules/general/OfflineIndicator/OfflineIndicator"
 import ScrollToTop from "modules/general/ScrollToToop/ScrollToTop";
 
 import "./App.css";
+import { HelmetProvider } from "react-helmet-async";
 
 const App = () => {
   const queryClient = new QueryClient();
 
   return (
     <div className="App">
-      <OfflineIndicator />
-      <ScrollToTop />
-      <QueryClientProvider client={queryClient}>
-        <MantineProvider withGlobalStyles withNormalizeCSS>
-          <BasePage>
-            <Outlet />
-          </BasePage>
-        </MantineProvider>
-      </QueryClientProvider>
+      <HelmetProvider>
+        <OfflineIndicator />
+        <ScrollToTop />
+        <QueryClientProvider client={queryClient}>
+          <MantineProvider withGlobalStyles withNormalizeCSS>
+            <BasePage>
+              <Outlet />
+            </BasePage>
+          </MantineProvider>
+        </QueryClientProvider>
+      </HelmetProvider>
     </div>
   );
 };
